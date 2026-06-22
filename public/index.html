@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aggregate Weather</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="topbar">
+        <div>
+          <h1>Aggregate Weather</h1>
+          <p id="locationLabel">Precise forecast comparison</p>
+        </div>
+        <form id="forecastForm" class="search">
+          <label>
+            <span>Latitude</span>
+            <input id="lat" name="lat" inputmode="decimal" value="39.7456" required>
+          </label>
+          <label>
+            <span>Longitude</span>
+            <input id="lon" name="lon" inputmode="decimal" value="-97.0892" required>
+          </label>
+          <label>
+            <span>Country</span>
+            <input id="country" name="country" maxlength="2" value="US" required>
+          </label>
+          <button type="submit">Refresh</button>
+          <a class="map-link" href="/globe.html">Globe</a>
+        </form>
+      </section>
+
+      <section class="current">
+        <div>
+          <span class="eyebrow">Current aggregate</span>
+          <strong id="currentValue">--</strong>
+        </div>
+        <div class="metrics">
+          <span id="sourceMetric">Sources --</span>
+          <span id="confidenceMetric">Confidence --</span>
+          <span id="updatedMetric">Updated --</span>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="Forecast views">
+        <button class="tab active" type="button" data-view="hourly">Hourly</button>
+        <button class="tab" type="button" data-view="daily">Daily</button>
+        <button class="tab" type="button" data-view="weekly">Weekly</button>
+        <button class="tab" type="button" data-view="14day">14-day</button>
+      </nav>
+
+      <section class="content">
+        <div id="status" class="status">Loading forecast...</div>
+        <div id="forecastList" class="forecast-list"></div>
+      </section>
+
+      <footer class="footer">
+        Project by Matthew Bateman. Weather data from NOAA/NWS and Open-Meteo.
+      </footer>
+    </main>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

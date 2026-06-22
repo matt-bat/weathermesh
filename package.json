@@ -1,0 +1,24 @@
+{
+  "name": "aggregate-weather-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Locality-safe aggregate weather forecast backend and simple app.",
+  "author": "Matthew Bateman",
+  "license": "MIT",
+  "scripts": {
+    "ci": "npm run check && npm test",
+    "compare": "node src/cli/compare-forecast.js",
+    "import:boundaries": "node scripts/import-natural-earth.mjs",
+    "start": "node src/server.js",
+    "verify:globe": "node scripts/verify-globe.mjs",
+    "test": "node --test",
+    "check": "find src test public scripts \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 -n 1 node --check"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
+  }
+}

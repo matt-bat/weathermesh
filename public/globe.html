@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aggregate Weather Globe</title>
+    <link rel="stylesheet" href="/globe.css">
+  </head>
+  <body>
+    <main class="globe-app">
+      <section class="hud top">
+        <div>
+          <h1>Forecast Globe</h1>
+          <p id="status">Loading country averages...</p>
+        </div>
+        <div class="controls">
+          <label>
+            <span>Time</span>
+            <input id="timeInput" type="datetime-local">
+          </label>
+          <button id="nowButton" type="button">Now</button>
+          <a href="/">Point forecast</a>
+        </div>
+      </section>
+
+      <section id="globeMount" class="globe-mount" aria-label="Interactive forecast globe"></section>
+
+      <section class="hud bottom">
+        <div>
+          <span class="label">Granularity</span>
+          <strong id="levelLabel">Country</strong>
+        </div>
+        <div>
+          <span class="label">Selected</span>
+          <strong id="selectedLabel">None</strong>
+        </div>
+        <div>
+          <span class="label">Temperature</span>
+          <strong id="tempLabel">--</strong>
+        </div>
+        <div>
+          <span class="label">Coverage</span>
+          <strong id="sampleLabel">--</strong>
+        </div>
+        <div>
+          <span class="label">Range</span>
+          <strong id="rangeLabel">--</strong>
+        </div>
+      </section>
+      <footer class="globe-credit">
+        Project by Matthew Bateman. Forecast data from Open-Meteo; country boundaries from Natural Earth.
+      </footer>
+    </main>
+    <script type="module" src="/globe.js"></script>
+  </body>
+</html>
