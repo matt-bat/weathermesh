@@ -55,13 +55,13 @@ The app needs outbound internet access for weather APIs and for the globe page t
 Build:
 
 ```sh
-docker build -t aggregate-weather-app .
+docker build -t weathermesh .
 ```
 
 Run:
 
 ```sh
-docker run --rm -p 3000:3000 aggregate-weather-app
+docker run --rm -p 3000:3000 weathermesh
 ```
 
 ## Operational Notes

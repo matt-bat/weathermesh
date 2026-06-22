@@ -1,9 +1,9 @@
 {
-  "name": "aggregate-weather-app",
+  "name": "weathermesh",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Locality-safe aggregate weather forecast backend and simple app.",
+  "description": "A locality-safe weather app that blends forecast sources and map samples into cleaner forecasts.",
   "author": "Matthew Bateman",
   "license": "MIT",
   "scripts": {

@@ -24,4 +24,3 @@ export const ATTRIBUTIONS = Object.freeze([
     notes: 'Used for the interactive WebGL globe.',
   },
 ]);
-

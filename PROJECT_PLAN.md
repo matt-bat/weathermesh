@@ -1,4 +1,4 @@
-# Aggregate Weather App Project Plan
+# WeatherMesh Project Plan
 
 Project credit: Matthew Bateman
 

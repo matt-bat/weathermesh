@@ -91,7 +91,7 @@ loadMapForecast();
 animate();
 
 async function loadMapForecast() {
-  statusEl.textContent = `Loading ${state.level} averages...`;
+  statusEl.textContent = `Loading ${state.level} consensus...`;
   const params = new URLSearchParams({
     level: state.level,
     time: new Date(timeInput.value).toISOString(),
@@ -103,7 +103,7 @@ async function loadMapForecast() {
     const payload = await response.json();
     state.areas = payload.areas;
     levelLabel.textContent = labelForLevel(payload.level);
-    statusEl.textContent = `${payload.areas.length} ${payload.level} averages for ${formatTime(payload.selectedTime)}`;
+    statusEl.textContent = `${payload.areas.length} ${payload.level} forecast meshes for ${formatTime(payload.selectedTime)}`;
     drawMarkers(payload.areas);
     updateSelection(null);
   } catch (error) {

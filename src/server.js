@@ -68,7 +68,7 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, () => {
-  console.log(`Aggregate Weather App listening on http://localhost:${port}`);
+  console.log(`WeatherMesh listening on http://localhost:${port}`);
 });
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

@@ -1,8 +1,8 @@
-# Aggregate Weather App
+# WeatherMesh
 
 Created by Matthew Bateman.
 
-Aggregate Weather is a small weather app that compares multiple forecasts for the same place, averages matching datapoints, and keeps the messy source work hidden behind a simple UI.
+WeatherMesh is a small weather app that compares multiple forecasts for the same place, averages matching datapoints, and keeps the messy source work hidden behind a simple UI.
 
 The app has two main views:
 

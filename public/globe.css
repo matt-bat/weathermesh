@@ -7,6 +7,7 @@
   --muted: #9eb3aa;
   --line: rgba(216, 231, 224, 0.2);
   --accent: #4fd1c5;
+  --hot: #f6d365;
 }
 
 * {
@@ -63,22 +64,24 @@ input {
   top: 16px;
   left: 16px;
   right: 16px;
-  min-height: 76px;
-  padding: 12px 14px;
+  min-height: 78px;
+  padding: 14px 16px;
 }
 
 .bottom {
   left: 16px;
   right: 16px;
   bottom: 16px;
-  min-height: 70px;
-  padding: 12px 14px;
+  min-height: 74px;
+  padding: 14px 16px;
   background: var(--panel-strong);
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr 1.2fr 1fr;
 }
 
 h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1.1;
   letter-spacing: 0;
 }
@@ -113,6 +116,10 @@ a {
   padding: 0 10px;
 }
 
+button {
+  background: rgba(79, 209, 197, 0.12);
+}
+
 button,
 a {
   display: inline-flex;
@@ -137,6 +144,7 @@ a:hover {
   display: block;
   margin-top: 4px;
   font-size: 18px;
+  line-height: 1.15;
 }
 
 .globe-credit {
@@ -177,7 +185,11 @@ a:hover {
   }
 
   .globe-credit {
-    bottom: 158px;
+    left: 12px;
+    right: 12px;
+    bottom: 196px;
+    max-width: none;
     text-align: left;
+    line-height: 1.25;
   }
 }

@@ -29,7 +29,7 @@ loadForecast();
 async function loadForecast() {
   const params = new URLSearchParams(new FormData(form));
   params.set('limit', '240');
-  statusEl.textContent = 'Loading forecast...';
+  statusEl.textContent = 'Building forecast consensus...';
   listEl.replaceChildren();
 
   try {

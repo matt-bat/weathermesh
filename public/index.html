@@ -3,15 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aggregate Weather</title>
+    <title>WeatherMesh</title>
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     <main class="app">
       <section class="topbar">
-        <div>
-          <h1>Aggregate Weather</h1>
-          <p id="locationLabel">Precise forecast comparison</p>
+        <div class="brand">
+          <span class="brand-mark">WM</span>
+          <div>
+            <h1>WeatherMesh</h1>
+            <p id="locationLabel">Blended local forecast consensus</p>
+          </div>
         </div>
         <form id="forecastForm" class="search">
           <label>
@@ -33,7 +36,7 @@
 
       <section class="current">
         <div>
-          <span class="eyebrow">Current aggregate</span>
+          <span class="eyebrow">Consensus now</span>
           <strong id="currentValue">--</strong>
         </div>
         <div class="metrics">
@@ -56,7 +59,7 @@
       </section>
 
       <footer class="footer">
-        Project by Matthew Bateman. Weather data from NOAA/NWS and Open-Meteo.
+        WeatherMesh by Matthew Bateman. Weather data from NOAA/NWS and Open-Meteo.
       </footer>
     </main>
     <script src="/app.js" type="module"></script>

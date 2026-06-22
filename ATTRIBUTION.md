@@ -2,7 +2,7 @@
 
 Project credit: Matthew Bateman.
 
-Aggregate Weather uses a few public/open data sources and libraries. This page is the human-readable version of what the app also exposes at `/api/attribution`.
+WeatherMesh uses a few public/open data sources and libraries. This page is the human-readable version of what the app also exposes at `/api/attribution`.
 
 ## Weather Data
 
@@ -25,4 +25,3 @@ Aggregate Weather uses a few public/open data sources and libraries. This page i
 ## Notes
 
 If this app is used commercially, review Open-Meteo's current commercial-use terms before launch.
-

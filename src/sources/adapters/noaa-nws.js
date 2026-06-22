@@ -2,7 +2,7 @@ import { getSourceById } from '../registry.js';
 import { fetchJson } from '../../http.js';
 
 const source = getSourceById('noaa_nws');
-const USER_AGENT = 'aggregate-weather-app/0.1 contact@example.com';
+const USER_AGENT = 'weathermesh/0.1 contact@example.com';
 
 export const noaaNwsAdapter = {
   id: 'noaa_nws',
