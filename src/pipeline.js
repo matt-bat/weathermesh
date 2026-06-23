@@ -12,24 +12,34 @@ export async function runForecastComparison(location, options = {}) {
   const points = results.flatMap((result) => result.points);
   const sourceResults = results.map(({ points: _points, ...result }) => result);
 
+  const now = normalizedOptions.now ?? new Date();
   const comparisons = buildForecastComparisons(normalizedLocation, points, {
-    now: normalizedOptions.now ?? new Date(),
+    now,
   });
-  const views = buildForecastViews(comparisons);
+  const currentAndFutureComparisons = comparisons.filter((row) => isCurrentOrFutureSlot(row.validTime, now));
+  const views = buildForecastViews(currentAndFutureComparisons);
 
   return {
     location: normalizedLocation,
     generatedAt: new Date().toISOString(),
     sourceResults,
     pointCount: points.length,
-    comparisons,
+    comparisons: currentAndFutureComparisons,
     views,
-    preview: filterComparisonRows(comparisons, {
+    preview: filterComparisonRows(currentAndFutureComparisons, {
       limit: normalizedOptions.limit,
       variables: normalizedOptions.variables,
       requireMultipleSources: normalizedOptions.requireMultipleSources,
     }),
   };
+}
+
+function isCurrentOrFutureSlot(validTime, now) {
+  const valid = new Date(validTime);
+  if (Number.isNaN(valid.getTime())) return true;
+  const currentHour = new Date(now);
+  currentHour.setMinutes(0, 0, 0);
+  return valid.getTime() >= currentHour.getTime();
 }
 
 async function fetchSourcePoints(sourceId, location, options) {

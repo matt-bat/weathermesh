@@ -9,6 +9,14 @@ const selectedLabel = document.querySelector('#selectedLabel');
 const tempLabel = document.querySelector('#tempLabel');
 const sampleLabel = document.querySelector('#sampleLabel');
 const rangeLabel = document.querySelector('#rangeLabel');
+const urlParams = new URLSearchParams(window.location.search);
+const embedMode = urlParams.get('embed') === '1';
+const centerLat = Number(urlParams.get('lat'));
+const centerLon = Number(urlParams.get('lon'));
+
+if (embedMode) {
+  document.body.classList.add('embed');
+}
 
 const state = {
   level: 'country',
@@ -20,6 +28,15 @@ const state = {
   dragging: false,
   pointer: { x: 0, y: 0 },
 };
+
+if (Number.isFinite(centerLat) && Number.isFinite(centerLon)) {
+  state.rotation.x = clamp(centerLat * Math.PI / 360, -1.05, 1.05);
+  state.rotation.y = -(centerLon + 90) * Math.PI / 180;
+  state.targetRotation.x = state.rotation.x;
+  state.targetRotation.y = state.rotation.y;
+  state.distance = 2.28;
+  state.level = 'region';
+}
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050806);

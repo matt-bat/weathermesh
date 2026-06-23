@@ -29,9 +29,21 @@
             <span>Country</span>
             <input id="country" name="country" maxlength="2" value="US" required>
           </label>
+          <button type="button" id="locationButton">Use location</button>
           <button type="submit">Refresh</button>
-          <a class="map-link" href="/globe.html">Globe</a>
+          <button type="button" id="themeButton" aria-pressed="false">Dark</button>
         </form>
+      </section>
+
+      <section id="globePanel" class="globe-panel">
+        <div class="globe-panel-head">
+          <div>
+            <span class="eyebrow">Local mesh</span>
+            <strong id="meshLabel">Centered forecast area</strong>
+          </div>
+          <button id="globeToggle" class="icon-button" type="button" aria-expanded="true" aria-label="Hide globe">⌃</button>
+        </div>
+        <iframe id="globeFrame" title="WeatherMesh local globe" src="/globe.html?embed=1"></iframe>
       </section>
 
       <section class="current">
@@ -46,16 +58,50 @@
         </div>
       </section>
 
-      <nav class="tabs" aria-label="Forecast views">
-        <button class="tab active" type="button" data-view="hourly">Hourly</button>
-        <button class="tab" type="button" data-view="daily">Daily</button>
-        <button class="tab" type="button" data-view="weekly">Weekly</button>
-        <button class="tab" type="button" data-view="14day">14-day</button>
-      </nav>
+      <section class="forecast-section today-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Today</span>
+            <h2>Current day</h2>
+          </div>
+          <button id="hourlyToggle" type="button" aria-expanded="false">Show hourly</button>
+        </div>
+        <div id="todayList" class="card-row"></div>
+        <div id="hourlyList" class="hourly-drawer" hidden></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Daily</span>
+            <h2>Next 7 days</h2>
+          </div>
+        </div>
+        <div id="dailyList" class="card-row daily-grid"></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Weekly</span>
+            <h2>Weekly outlook</h2>
+          </div>
+        </div>
+        <div id="weeklyList" class="card-row weekly-grid"></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">2 weeks</span>
+            <h2>14-day outlook</h2>
+          </div>
+        </div>
+        <div id="twoWeekList" class="card-row two-week-grid"></div>
+      </section>
 
       <section class="content">
         <div id="status" class="status">Loading forecast...</div>
-        <div id="forecastList" class="forecast-list"></div>
       </section>
 
       <footer class="footer">

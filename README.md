@@ -14,13 +14,20 @@ The project is intentionally lightweight right now: no frontend build step, no d
 ## What Works Today
 
 - Live NOAA/NWS + Open-Meteo forecast pulls for U.S. point forecasts.
+- Multiple Open-Meteo model contributors where available, including Best Match, GFS, ECMWF, and NBM for U.S. localities.
 - Open-Meteo fallback for broader/global map sampling.
 - Forecast normalization into a shared internal schema.
 - Weighted aggregate forecasts grouped by time, variable, and unit.
 - Source-vs-average comparison output.
 - Locality guardrails for distance, elevation, neighbourhood, and district labels.
 - Hourly, daily, weekly, and 14-day forecast views.
-- A Three.js globe with:
+- A main dashboard with:
+  - a one-third-height embedded globe that can be hidden
+  - automatic current-location lookup when the browser allows it
+  - light and dark modes
+  - current-day, daily, weekly, and 14-day forecast sections
+  - expandable hourly detail for the current day
+- A standalone Three.js globe with:
   - Natural Earth country-boundary sampling
   - simplified region polygons
   - point locality samples

@@ -80,6 +80,7 @@ Deliverables:
 - Hourly, daily, weekly, and 14-day tabs.
 - Confidence/source-count indicator.
 - Optional details drawer for source comparison.
+- Main dashboard with embedded collapsible globe, current-location centering, light/dark mode, and current-day expandable hourly detail.
 - Three.js globe map with country, region, and locality forecast-average layers.
 - Time selection for current and future forecast map views.
 - Natural Earth country-boundary sampling, with simplified region polygons before full admin-1 boundary-dataset support.

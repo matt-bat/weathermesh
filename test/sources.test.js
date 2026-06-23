@@ -11,15 +11,15 @@ import {
 } from '../src/sources/adapters/open-meteo.js';
 import { getMvpSourcesForCountry } from '../src/sources/registry.js';
 
-test('getMvpSourcesForCountry includes official country source and global model source', () => {
+test('getMvpSourcesForCountry includes official country source and model-source mesh', () => {
   assert.deepEqual(
     getMvpSourcesForCountry('US').map((source) => source.id),
-    ['noaa_nws', 'open_meteo'],
+    ['noaa_nws', 'open_meteo', 'open_meteo_gfs', 'open_meteo_ecmwf', 'open_meteo_nbm'],
   );
 
   assert.deepEqual(
     getMvpSourcesForCountry('CA').map((source) => source.id),
-    ['msc_eccc_geomet', 'open_meteo'],
+    ['msc_eccc_geomet', 'open_meteo', 'open_meteo_gfs', 'open_meteo_ecmwf'],
   );
 });
 
@@ -94,6 +94,17 @@ test('buildOpenMeteoForecastUrl includes 14-day weather variables', () => {
   assert.equal(url.searchParams.get('timezone'), 'America/Edmonton');
   assert.ok(url.searchParams.get('hourly').includes('temperature_2m'));
   assert.ok(url.searchParams.get('daily').includes('temperature_2m_max'));
+});
+
+test('buildOpenMeteoForecastUrl can request a specific model contributor', () => {
+  const url = new URL(
+    buildOpenMeteoForecastUrl(
+      { latitude: 39.7456, longitude: -97.0892 },
+      { model: 'gfs_global' },
+    ),
+  );
+
+  assert.equal(url.searchParams.get('models'), 'gfs_global');
 });
 
 test('normalizeOpenMeteoForecast converts hourly arrays into weather points', () => {

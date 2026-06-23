@@ -1,45 +1,53 @@
 import { fetchJson } from '../../http.js';
+import { getSourceById } from '../registry.js';
 
 const OPEN_METEO_FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
 
-export const openMeteoAdapter = {
-  id: 'open_meteo',
+export function createOpenMeteoAdapter(sourceId) {
+  const source = getSourceById(sourceId);
 
-  async resolveBinding(location) {
-    validateCoordinate(location);
+  return {
+    id: sourceId,
 
-    return [
-      {
-        sourceId: this.id,
-        type: 'coordinate',
-        key: `${location.latitude.toFixed(5)},${location.longitude.toFixed(5)}`,
-        latitude: location.latitude,
-        longitude: location.longitude,
-        elevationMeters: location.elevationMeters,
-        metadata: {
-          forecastUrl: buildOpenMeteoForecastUrl(location),
+    async resolveBinding(location) {
+      validateCoordinate(location);
+
+      return [
+        {
+          sourceId: this.id,
+          type: 'coordinate',
+          key: `${location.latitude.toFixed(5)},${location.longitude.toFixed(5)}`,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          elevationMeters: location.elevationMeters,
+          metadata: {
+            forecastUrl: buildOpenMeteoForecastUrl(location, { model: source?.model }),
+            model: source?.model,
+          },
         },
-      },
-    ];
-  },
+      ];
+    },
 
-  async fetchForecast(binding, options = {}) {
-    const forecastUrl = options.url ?? binding?.metadata?.forecastUrl;
-    if (!forecastUrl) {
-      throw new Error('Open-Meteo binding is missing forecast URL metadata.');
-    }
+    async fetchForecast(binding, options = {}) {
+      const forecastUrl = options.url ?? binding?.metadata?.forecastUrl;
+      if (!forecastUrl) {
+        throw new Error('Open-Meteo binding is missing forecast URL metadata.');
+      }
 
-    return fetchJson(forecastUrl);
-  },
+      return fetchJson(forecastUrl);
+    },
 
-  async fetchObservations() {
-    return [];
-  },
+    async fetchObservations() {
+      return [];
+    },
 
-  async normalize(rawForecast, context = {}) {
-    return normalizeOpenMeteoForecast(rawForecast, context);
-  },
-};
+    async normalize(rawForecast, context = {}) {
+      return normalizeOpenMeteoForecast(rawForecast, { ...context, sourceId: this.id });
+    },
+  };
+}
+
+export const openMeteoAdapter = createOpenMeteoAdapter('open_meteo');
 
 export function buildOpenMeteoForecastUrl(location, options = {}) {
   validateCoordinate(location);
@@ -73,6 +81,9 @@ export function buildOpenMeteoForecastUrl(location, options = {}) {
     ].join(','),
   );
   url.searchParams.set('forecast_days', String(options.forecastDays ?? 14));
+  if (options.model) {
+    url.searchParams.set('models', options.model);
+  }
 
   return url.toString();
 }
@@ -105,7 +116,7 @@ function addSeries(points, data, units, sourceKey, variable, unit, context) {
     if (!Number.isFinite(value)) continue;
 
     points.push({
-      sourceId: 'open_meteo',
+      sourceId: context.sourceId ?? 'open_meteo',
       variable,
       value,
       unit: unit ?? units[sourceKey] ?? 'unknown',
