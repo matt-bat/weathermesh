@@ -66,6 +66,7 @@ PORT=3001 npm start
 ```sh
 npm test
 npm run check
+npm run build:pages
 npm run verify:globe
 npm run compare -- --lat 39.7456 --lon -97.0892 --country US
 ```
@@ -106,6 +107,22 @@ Attribution:
 
 ```sh
 curl "http://localhost:3000/api/attribution"
+```
+
+## GitHub Pages
+
+WeatherMesh also ships a static GitHub Pages preview:
+
+```text
+https://matt-bat.github.io/weathermesh/
+```
+
+GitHub Pages cannot run the Node API, so the public Pages site shows the real UI with built-in preview forecast data when `/api/forecast` and `/api/map-forecast` are not available. Run the Node server locally, or deploy it to a Node-capable host, for live multi-source forecast aggregation.
+
+Build the static Pages artifact locally with:
+
+```sh
+npm run build:pages
 ```
 
 ## Environment

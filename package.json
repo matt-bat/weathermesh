@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "ci": "npm run check && npm test",
+    "build:pages": "node scripts/build-pages.mjs",
     "compare": "node src/cli/compare-forecast.js",
     "import:boundaries": "node scripts/import-natural-earth.mjs",
     "start": "node src/server.js",

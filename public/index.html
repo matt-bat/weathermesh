@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WeatherMesh</title>
-    <link rel="stylesheet" href="/styles.css">
+    <script>window.WEATHERMESH_STATIC_PREVIEW = false;</script>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <main class="app">
@@ -43,7 +44,7 @@
           </div>
           <button id="globeToggle" class="icon-button" type="button" aria-expanded="true" aria-label="Hide globe">⌃</button>
         </div>
-        <iframe id="globeFrame" title="WeatherMesh local globe" src="/globe.html?embed=1"></iframe>
+        <iframe id="globeFrame" title="WeatherMesh local globe" src="globe.html?embed=1"></iframe>
       </section>
 
       <section class="current">
@@ -108,6 +109,6 @@
         WeatherMesh by Matthew Bateman. Weather data from NOAA/NWS and Open-Meteo.
       </footer>
     </main>
-    <script src="/app.js" type="module"></script>
+    <script src="app.js" type="module"></script>
   </body>
 </html>

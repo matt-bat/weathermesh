@@ -79,6 +79,13 @@ async function loadForecast() {
   clearForecast();
   updateGlobeFrame();
 
+  if (window.WEATHERMESH_STATIC_PREVIEW) {
+    forecast = buildStaticPreviewForecast(params);
+    render();
+    statusEl.textContent = 'Static preview mode. Run the Node server for live WeatherMesh forecasts.';
+    return;
+  }
+
   try {
     const response = await fetch(`/api/forecast?${params.toString()}`);
     if (!response.ok) {
@@ -87,8 +94,9 @@ async function loadForecast() {
     forecast = await response.json();
     render();
   } catch (error) {
-    statusEl.textContent = error.message;
-    currentValueEl.textContent = '--';
+    forecast = buildStaticPreviewForecast(params);
+    render();
+    statusEl.textContent = `Static preview mode. Live WeatherMesh forecasts need the Node server. (${error.message})`;
   }
 }
 
@@ -198,7 +206,11 @@ function sourceTableHtml(sources) {
 function updateGlobeFrame() {
   const lat = form.elements.lat.value;
   const lon = form.elements.lon.value;
-  globeFrame.src = `/globe.html?embed=1&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`;
+  const globeUrl = new URL('globe.html', window.location.href);
+  globeUrl.searchParams.set('embed', '1');
+  globeUrl.searchParams.set('lat', lat);
+  globeUrl.searchParams.set('lon', lon);
+  globeFrame.src = globeUrl.toString();
 }
 
 function setTheme(theme) {
@@ -242,6 +254,101 @@ function inferCountry(latitude, longitude) {
   if (latitude >= 41 && latitude <= 84 && longitude >= -142 && longitude <= -52) return 'CA';
   if (latitude >= 18 && latitude <= 72 && longitude >= -172 && longitude <= -66) return 'US';
   return form.elements.country.value || 'US';
+}
+
+function buildStaticPreviewForecast(params) {
+  const latitude = Number(params.get('lat') ?? form.elements.lat.value).toFixed(4);
+  const longitude = Number(params.get('lon') ?? form.elements.lon.value).toFixed(4);
+  const countryCode = String(params.get('country') ?? form.elements.country.value ?? 'US').toUpperCase();
+  const generatedAt = new Date();
+  generatedAt.setMinutes(0, 0, 0);
+
+  const hourly = Array.from({ length: 48 }, (_, index) => {
+    const validAt = new Date(generatedAt.getTime() + index * 60 * 60 * 1000);
+    const value = 17 + Math.sin((index - 5) / 4) * 5 + Math.sin(index / 11) * 2;
+    return {
+      validTime: validAt.toISOString(),
+      variable: 'temperature',
+      unit: 'celsius',
+      aggregateValue: Number(value.toFixed(1)),
+      spread: Number((2.3 + (index % 5) * 0.4).toFixed(1)),
+      confidence: 78,
+      sourceCount: 5,
+      sources: [
+        sourceSample('open-meteo-best-match', value - 0.7, value),
+        sourceSample('open-meteo-gfs', value + 0.8, value),
+        sourceSample('open-meteo-ecmwf', value - 1.1, value),
+        sourceSample('open-meteo-nbm', value + 0.3, value),
+        sourceSample('noaa-nws-gridpoints', value + 0.6, value),
+      ],
+    };
+  });
+
+  const daily = Array.from({ length: 14 }, (_, index) => {
+    const validAt = new Date(generatedAt.getTime() + index * 24 * 60 * 60 * 1000);
+    const average = 16 + Math.sin(index / 2.8) * 6;
+    return {
+      validTime: validAt.toISOString().slice(0, 10),
+      confidence: 76,
+      sourceCount: 5,
+      variables: {
+        temperature: {
+          min: Number((average - 5.2).toFixed(1)),
+          max: Number((average + 4.8).toFixed(1)),
+          confidence: 76,
+          sourceCount: 5,
+        },
+        precipitation_probability: {
+          average: Math.max(8, Math.min(78, Math.round(28 + Math.sin(index / 1.7) * 22))),
+        },
+      },
+    };
+  });
+
+  return {
+    location: { latitude, longitude, countryCode },
+    generatedAt: generatedAt.toISOString(),
+    views: {
+      hourly,
+      daily,
+      weekly: [
+        mergePreviewPeriod('Week 1', daily.slice(0, 7)),
+        mergePreviewPeriod('Week 2', daily.slice(7, 14)),
+      ],
+      fourteenDay: daily,
+    },
+  };
+}
+
+function sourceSample(sourceId, sourceValue, aggregateValue) {
+  const roundedSource = Number(sourceValue.toFixed(1));
+  return {
+    sourceId,
+    value: roundedSource,
+    unit: 'celsius',
+    deltaFromAggregate: Number((roundedSource - aggregateValue).toFixed(1)),
+  };
+}
+
+function mergePreviewPeriod(label, rows) {
+  const mins = rows.map((row) => row.variables.temperature.min);
+  const maxes = rows.map((row) => row.variables.temperature.max);
+  return {
+    validTime: label,
+    confidence: 74,
+    sourceCount: 5,
+    variables: {
+      temperature: {
+        min: Math.min(...mins),
+        max: Math.max(...maxes),
+        confidence: 74,
+        sourceCount: 5,
+      },
+      precipitation_probability: {
+        average: Math.round(rows.reduce((sum, row) => sum + row.variables.precipitation_probability.average, 0) / rows.length),
+      },
+    },
+  };
 }
 
 function escapeHtml(value) {

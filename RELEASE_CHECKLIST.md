@@ -9,6 +9,7 @@ Use this before pushing a release branch or tagging a version.
 ```sh
 npm ci
 npm run ci
+npm run build:pages
 npm run verify:globe
 ```
 
@@ -24,6 +25,7 @@ Check:
 - `http://localhost:3000/globe.html`
 - `http://localhost:3000/api/health`
 - `http://localhost:3000/api/version`
+- `dist/pages/index.html` after `npm run build:pages`
 
 ## Data
 
@@ -52,6 +54,8 @@ git push -u origin main
 git push origin v0.1.0
 ```
 
+GitHub Pages deploys automatically from `main` through `.github/workflows/pages.yml`.
+
 ## Before Calling It Production
 
 This is ready for a public repo release, but a public user-facing deployment should still add:
@@ -61,4 +65,3 @@ This is ready for a public repo release, but a public user-facing deployment sho
 - rate limiting
 - admin-1 boundary import for states/provinces
 - monitoring/log aggregation
-

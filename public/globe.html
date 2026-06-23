@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WeatherMesh Globe</title>
-    <link rel="stylesheet" href="/globe.css">
+    <script>window.WEATHERMESH_STATIC_PREVIEW = false;</script>
+    <link rel="stylesheet" href="globe.css">
   </head>
   <body>
     <main class="globe-app">
@@ -19,7 +20,7 @@
             <input id="timeInput" type="datetime-local">
           </label>
           <button id="nowButton" type="button">Now</button>
-          <a href="/">Point forecast</a>
+          <a href="./">Point forecast</a>
         </div>
       </section>
 
@@ -51,6 +52,6 @@
         WeatherMesh by Matthew Bateman. Forecast data from Open-Meteo; country boundaries from Natural Earth.
       </footer>
     </main>
-    <script type="module" src="/globe.js"></script>
+    <script type="module" src="globe.js"></script>
   </body>
 </html>

@@ -114,18 +114,31 @@ async function loadMapForecast() {
     time: new Date(timeInput.value).toISOString(),
   });
 
+  if (window.WEATHERMESH_STATIC_PREVIEW) {
+    const payload = buildStaticPreviewMap(state.level, new Date(timeInput.value));
+    applyMapPayload(payload);
+    statusEl.textContent = 'Static preview mode. Run the Node server for live map forecasts.';
+    return;
+  }
+
   try {
     const response = await fetch(`/api/map-forecast?${params.toString()}`);
     if (!response.ok) throw new Error(`Map forecast failed with ${response.status}`);
     const payload = await response.json();
-    state.areas = payload.areas;
-    levelLabel.textContent = labelForLevel(payload.level);
-    statusEl.textContent = `${payload.areas.length} ${payload.level} forecast meshes for ${formatTime(payload.selectedTime)}`;
-    drawMarkers(payload.areas);
-    updateSelection(null);
+    applyMapPayload(payload);
   } catch (error) {
-    statusEl.textContent = error.message;
+    const payload = buildStaticPreviewMap(state.level, new Date(timeInput.value));
+    applyMapPayload(payload);
+    statusEl.textContent = `Static preview mode. Live map forecasts need the Node server. (${error.message})`;
   }
+}
+
+function applyMapPayload(payload) {
+  state.areas = payload.areas;
+  levelLabel.textContent = labelForLevel(payload.level);
+  statusEl.textContent = `${payload.areas.length} ${payload.level} forecast meshes for ${formatTime(payload.selectedTime)}`;
+  drawMarkers(payload.areas);
+  updateSelection(null);
 }
 
 function drawMarkers(areas) {
@@ -257,6 +270,56 @@ function colorForTemperature(value) {
   if (value <= 20) return 0xf6d365;
   if (value <= 30) return 0xf59e42;
   return 0xef4444;
+}
+
+function buildStaticPreviewMap(level, selectedTime) {
+  const areasByLevel = {
+    country: [
+      previewArea('United States', 'country', 39.8, -98.6, 18, 48, 48, 'natural_earth_admin0_110m'),
+      previewArea('Canada', 'country', 57.2, -106.3, 9, 42, 42, 'natural_earth_admin0_110m'),
+      previewArea('Mexico', 'country', 23.6, -102.5, 27, 35, 35, 'natural_earth_admin0_110m'),
+      previewArea('United Kingdom', 'country', 54.4, -2.8, 14, 28, 28, 'natural_earth_admin0_110m'),
+      previewArea('Japan', 'country', 36.2, 138.2, 22, 34, 34, 'natural_earth_admin0_110m'),
+      previewArea('Australia', 'country', -25.3, 133.8, 24, 38, 38, 'natural_earth_admin0_110m'),
+    ],
+    region: [
+      previewArea('Alberta', 'region', 53.9, -115.0, 12, 9, 9, 'polygon_weighted_grid', 1),
+      previewArea('Pacific Northwest', 'region', 45.7, -122.6, 17, 8, 8, 'polygon_weighted_grid', 1),
+      previewArea('Great Lakes', 'region', 43.7, -84.6, 21, 10, 10, 'weighted_grid'),
+      previewArea('Northeast Corridor', 'region', 41.2, -74.7, 24, 10, 10, 'weighted_grid'),
+      previewArea('Southern Plains', 'region', 34.8, -97.6, 31, 9, 9, 'weighted_grid'),
+    ],
+    locality: [
+      previewArea('Downtown Calgary', 'locality', 51.0447, -114.0719, 16, 5, 5, 'point'),
+      previewArea('North Calgary', 'locality', 51.1260, -114.0710, 15, 5, 5, 'point'),
+      previewArea('West Calgary', 'locality', 51.0600, -114.1900, 14, 5, 5, 'point'),
+      previewArea('East Calgary', 'locality', 51.0450, -113.9400, 17, 5, 5, 'point'),
+      previewArea('South Calgary', 'locality', 50.9500, -114.0700, 16, 5, 5, 'point'),
+    ],
+  };
+
+  return {
+    level,
+    selectedTime: selectedTime.toISOString(),
+    areas: areasByLevel[level] ?? areasByLevel.country,
+  };
+}
+
+function previewArea(label, level, latitude, longitude, averageTemperature, sampleCount, validSampleCount, samplingMethod, polygonCount = 0) {
+  return {
+    id: `preview-${label.toLowerCase().replaceAll(' ', '-')}`,
+    label,
+    level,
+    latitude,
+    longitude,
+    averageTemperature,
+    temperatureMin: averageTemperature - 4,
+    temperatureMax: averageTemperature + 5,
+    sampleCount,
+    validSampleCount,
+    samplingMethod,
+    polygonCount,
+  };
 }
 
 function toDateTimeLocal(date) {
