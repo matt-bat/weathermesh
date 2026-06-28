@@ -25,7 +25,7 @@ Check:
 - `http://localhost:3000/globe.html`
 - `http://localhost:3000/api/health`
 - `http://localhost:3000/api/version`
-- `dist/pages/index.html` after `npm run build:pages`
+- `docs/index.html` after `npm run build:pages`
 
 ## Data
 
@@ -54,7 +54,7 @@ git push -u origin main
 git push origin v0.1.0
 ```
 
-GitHub Pages deploys automatically from `main` through `.github/workflows/pages.yml`.
+GitHub Pages serves the checked-in `docs/` folder from `main`. The workflow also builds and deploys the same static app.
 
 ## Before Calling It Production
 

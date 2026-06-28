@@ -111,7 +111,7 @@ curl "http://localhost:3000/api/attribution"
 
 ## GitHub Pages
 
-WeatherMesh also ships a static GitHub Pages preview:
+WeatherMesh also ships a static GitHub Pages preview from the checked-in `docs/` folder:
 
 ```text
 https://matt-bat.github.io/weathermesh/
@@ -119,7 +119,7 @@ https://matt-bat.github.io/weathermesh/
 
 GitHub Pages cannot run the Node API, so the public Pages site shows the real UI with built-in preview forecast data when `/api/forecast` and `/api/map-forecast` are not available. Run the Node server locally, or deploy it to a Node-capable host, for live multi-source forecast aggregation.
 
-Build the static Pages artifact locally with:
+Build the static Pages files locally with:
 
 ```sh
 npm run build:pages

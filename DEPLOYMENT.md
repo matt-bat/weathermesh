@@ -58,9 +58,9 @@ GitHub Pages is set up as a static public preview at:
 https://matt-bat.github.io/weathermesh/
 ```
 
-The Pages workflow builds `dist/pages` from `public/` and deploys it through GitHub Actions. Since Pages does not run Node, API calls fall back to preview data in the browser. That keeps the UI usable for visitors, but live forecast aggregation still needs a Node deployment.
+The Pages build copies `public/` into the checked-in `docs/` folder. GitHub Pages is pointed at `main /docs`, so the public site serves the app instead of rendering the README. Since Pages does not run Node, API calls fall back to preview data in the browser. That keeps the UI usable for visitors, but live forecast aggregation still needs a Node deployment.
 
-Build the Pages artifact locally:
+Build the Pages files locally:
 
 ```sh
 npm run build:pages
