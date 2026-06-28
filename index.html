@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WeatherMesh</title>
+    <script>window.WEATHERMESH_STATIC_PREVIEW = true;</script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="topbar">
+        <div class="brand">
+          <span class="brand-mark">WM</span>
+          <div>
+            <h1>WeatherMesh</h1>
+            <p id="locationLabel">Blended local forecast consensus</p>
+          </div>
+        </div>
+        <form id="forecastForm" class="search">
+          <label>
+            <span>Latitude</span>
+            <input id="lat" name="lat" inputmode="decimal" value="39.7456" required>
+          </label>
+          <label>
+            <span>Longitude</span>
+            <input id="lon" name="lon" inputmode="decimal" value="-97.0892" required>
+          </label>
+          <label>
+            <span>Country</span>
+            <input id="country" name="country" maxlength="2" value="US" required>
+          </label>
+          <button type="button" id="locationButton">Use location</button>
+          <button type="submit">Refresh</button>
+          <button type="button" id="themeButton" aria-pressed="false">Dark</button>
+        </form>
+      </section>
+
+      <section id="globePanel" class="globe-panel">
+        <div class="globe-panel-head">
+          <div>
+            <span class="eyebrow">Local mesh</span>
+            <strong id="meshLabel">Centered forecast area</strong>
+          </div>
+          <button id="globeToggle" class="icon-button" type="button" aria-expanded="true" aria-label="Hide globe">⌃</button>
+        </div>
+        <iframe id="globeFrame" title="WeatherMesh local globe" src="globe.html?embed=1"></iframe>
+      </section>
+
+      <section class="current">
+        <div>
+          <span class="eyebrow">Consensus now</span>
+          <strong id="currentValue">--</strong>
+        </div>
+        <div class="metrics">
+          <span id="sourceMetric">Sources --</span>
+          <span id="confidenceMetric">Confidence --</span>
+          <span id="updatedMetric">Updated --</span>
+        </div>
+      </section>
+
+      <section class="forecast-section today-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Today</span>
+            <h2>Current day</h2>
+          </div>
+          <button id="hourlyToggle" type="button" aria-expanded="false">Show hourly</button>
+        </div>
+        <div id="todayList" class="card-row"></div>
+        <div id="hourlyList" class="hourly-drawer" hidden></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Daily</span>
+            <h2>Next 7 days</h2>
+          </div>
+        </div>
+        <div id="dailyList" class="card-row daily-grid"></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Weekly</span>
+            <h2>Weekly outlook</h2>
+          </div>
+        </div>
+        <div id="weeklyList" class="card-row weekly-grid"></div>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">2 weeks</span>
+            <h2>14-day outlook</h2>
+          </div>
+        </div>
+        <div id="twoWeekList" class="card-row two-week-grid"></div>
+      </section>
+
+      <section class="content">
+        <div id="status" class="status">Loading forecast...</div>
+      </section>
+
+      <footer class="footer">
+        WeatherMesh by Matthew Bateman. Weather data from NOAA/NWS and Open-Meteo.
+      </footer>
+    </main>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
